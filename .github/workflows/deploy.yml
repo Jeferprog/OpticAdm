@@ -1,26 +1,22 @@
 # ─────────────────────────────────────────────────────────────
 #  OpticAdm — Publicação no GitHub Pages
 # ─────────────────────────────────────────────────────────────
-#  ATENÇÃO: por enquanto este fluxo só roda MANUALMENTE (botão
-#  "Run workflow" na aba Actions). Isso é proposital: nada é
-#  publicado antes de o banco próprio do OpticAdm existir.
+#  Publica o site automaticamente a cada merge na branch main
+#  (e também pode ser rodado à mão pelo botão "Run workflow").
 #
-#  No próximo passo, para publicar automaticamente a cada merge
-#  na main, troque o bloco "on:" abaixo por:
-#      on:
-#        push:
-#          branches: [main]
-#        workflow_dispatch:
-#
-#  Antes de ativar, também é preciso:
+#  Para funcionar, o repositório precisa ter (feito uma vez):
 #    1. Settings → Pages → Source: "GitHub Actions"
-#    2. Settings → Secrets and variables → Actions → cadastrar:
+#    2. Settings → Secrets and variables → Actions → cadastrados:
 #         VITE_SUPABASE_URL  e  VITE_SUPABASE_ANON_KEY
+#
+#  Endereço final do site:  https://jeferprog.github.io/OpticAdm/
 # ─────────────────────────────────────────────────────────────
 
 name: Deploy no GitHub Pages
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
