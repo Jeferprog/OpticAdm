@@ -22,8 +22,9 @@ export async function lerArquivoBackup(file) {
   try { conteudo = JSON.parse(strFromU8(arquivos['dados.json'])) } catch {
     throw new Error('O dados.json deste backup está danificado.')
   }
-  if (conteudo?.formato !== 'mercadao-dos-oculos-backup' || !conteudo.tabelas) {
-    throw new Error('Este arquivo não é um backup do Mercadão dos Óculos.')
+  const formatosValidos = ['opticadm-backup', 'mercadao-dos-oculos-backup']
+  if (!formatosValidos.includes(conteudo?.formato) || !conteudo.tabelas) {
+    throw new Error('Este arquivo não é um backup do OpticAdm.')
   }
 
   // Confere o código do resumo.txt com o dados.json.

@@ -58,7 +58,7 @@ export default function Login() {
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
             <img
-              src={`${import.meta.env.BASE_URL}logo.png`}
+              src={`${import.meta.env.BASE_URL}logo.svg`}
               alt="Logo"
               style={{ width: '80px', height: '80px', objectFit: 'contain' }}
               onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'block' }}
@@ -72,7 +72,7 @@ export default function Login() {
             margin: '0 0 0.3rem',
             letterSpacing: '-0.3px',
           }}>
-            Mercadão dos Óculos
+            OpticAdm
           </h1>
           <p style={{ color: '#94a3b8', fontSize: '0.85rem', margin: 0 }}>
             Sistema de Gestão

@@ -1,0 +1,9 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" rx="10" fill="#C0272D"/>
+  <!-- Lente esquerda -->
+  <rect x="3.5" y="14" width="17" height="16" rx="5" fill="none" stroke="white" stroke-width="2.5"/>
+  <!-- Lente direita -->
+  <rect x="27.5" y="14" width="17" height="16" rx="5" fill="none" stroke="white" stroke-width="2.5"/>
+  <!-- Ponte -->
+  <path d="M 20.5 22 Q 24 18, 27.5 22" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>

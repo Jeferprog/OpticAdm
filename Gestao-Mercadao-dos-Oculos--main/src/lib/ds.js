@@ -1,4 +1,4 @@
-/* Design System — Mercadão dos Óculos */
+/* Design System — OpticAdm */
 
 export const C = {
   primary:                '#9d0518',
