@@ -4,5 +4,5 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/Gestao-Mercadao-dos-Oculos-/',
+  base: '/OpticAdm/',
 })
