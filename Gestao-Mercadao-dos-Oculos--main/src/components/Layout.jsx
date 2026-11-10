@@ -75,7 +75,7 @@ export default function Layout() {
               <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>menu</span>
             </button>
             <span style={{ color: '#fff', fontWeight: '700', fontSize: '0.95rem', fontFamily: F.headline }}>
-              Mercadão dos Óculos
+              OpticAdm
             </span>
           </header>
         ) : (

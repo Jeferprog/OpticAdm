@@ -1122,7 +1122,7 @@ export default function Cobrancas() {
   @media print{body{margin:0}}
 </style></head><body>
   <div class="hd">
-    <h1>Mercadão dos Óculos — Relatório de Cobranças</h1>
+    <h1>OpticAdm — Relatório de Cobranças</h1>
     <div class="sub">Emitido em ${fDate(todayISO())}</div>
   </div>
   <div class="meta">
@@ -1152,7 +1152,7 @@ export default function Cobrancas() {
       </tr>
     </tfoot>
   </table>
-  <div class="foot">Relatório gerado pelo sistema de gestão Mercadão dos Óculos</div>
+  <div class="foot">Relatório gerado pelo sistema de gestão OpticAdm</div>
   <script>window.onload=function(){window.print()}</script>
 </body></html>`
 

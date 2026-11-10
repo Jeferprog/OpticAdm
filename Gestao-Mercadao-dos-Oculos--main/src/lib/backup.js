@@ -204,7 +204,7 @@ async function gerarBackup(tipo, { feitoPor, onProgresso }) {
 
   onProgresso('Montando o arquivo…')
   const conteudo = {
-    formato: 'mercadao-dos-oculos-backup',
+    formato: 'opticadm-backup',
     versao: 1,
     tipo,
     criado_em: criadoEm,
@@ -217,8 +217,8 @@ async function gerarBackup(tipo, { feitoPor, onProgresso }) {
   const qtd = Object.fromEntries(TABELAS_BACKUP.map(t => [t.nome, (dados[t.nome] || []).length]))
 
   const resumo = [
-    'BACKUP - MERCADÃO DOS ÓCULOS',
-    '============================',
+    'BACKUP - OPTICADM',
+    '==================',
     `Tipo:       ${TIPOS_BACKUP[tipo].rotulo} (${TIPOS_BACKUP[tipo].detalhe})`,
     `Feito em:   ${fmtDataHora(criadoEm)}`,
     `Feito por:  ${feitoPor || '-'}`,

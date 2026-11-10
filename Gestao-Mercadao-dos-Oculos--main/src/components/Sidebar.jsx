@@ -111,7 +111,7 @@ export default function Sidebar({ isMobile = false, isOpen = false, onClose = ()
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
           <img
-            src={`${import.meta.env.BASE_URL}logo.png`}
+            src={`${import.meta.env.BASE_URL}logo.svg`}
             alt="Logo"
             style={{ width: '36px', height: '36px', objectFit: 'contain', borderRadius: '6px', flexShrink: 0 }}
             onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex' }}
@@ -125,7 +125,7 @@ export default function Sidebar({ isMobile = false, isOpen = false, onClose = ()
           </div>
           <div>
             <div style={{ color: C.onSurface, fontWeight: '700', fontSize: '0.82rem', lineHeight: '1.2', fontFamily: F.headline }}>
-              Mercadão dos Óculos
+              OpticAdm
             </div>
             <div style={{ color: C.onSurfaceVariant, fontSize: '0.68rem', marginTop: '1px', fontFamily: F.body }}>
               Sistema de Gestão

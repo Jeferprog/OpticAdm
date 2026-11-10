@@ -1185,7 +1185,7 @@ export default function Vendas() {
   @media print{body{margin:0}}
 </style></head><body>
   <div class="hd">
-    <h1>Mercadão dos Óculos — Relatório de Vendas</h1>
+    <h1>OpticAdm — Relatório de Vendas</h1>
     <div class="sub">Emitido em ${fDateBR(hoje)}</div>
   </div>
   <div class="meta">
@@ -1209,7 +1209,7 @@ export default function Vendas() {
       </tr>
     </tfoot>
   </table>
-  <div class="foot">Relatório gerado pelo sistema de gestão Mercadão dos Óculos</div>
+  <div class="foot">Relatório gerado pelo sistema de gestão OpticAdm</div>
   <script>window.onload=function(){window.print()}</script>
 </body></html>`
 
