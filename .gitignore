@@ -1,0 +1,24 @@
+# Dependências
+node_modules/
+
+# Build de produção
+dist/
+dist-ssr/
+
+# Variáveis de ambiente — NUNCA versionar (contêm as chaves do banco)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Sistema operacional / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sw?

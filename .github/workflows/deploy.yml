@@ -1,0 +1,74 @@
+# ─────────────────────────────────────────────────────────────
+#  OpticAdm — Publicação no GitHub Pages
+# ─────────────────────────────────────────────────────────────
+#  ATENÇÃO: por enquanto este fluxo só roda MANUALMENTE (botão
+#  "Run workflow" na aba Actions). Isso é proposital: nada é
+#  publicado antes de o banco próprio do OpticAdm existir.
+#
+#  No próximo passo, para publicar automaticamente a cada merge
+#  na main, troque o bloco "on:" abaixo por:
+#      on:
+#        push:
+#          branches: [main]
+#        workflow_dispatch:
+#
+#  Antes de ativar, também é preciso:
+#    1. Settings → Pages → Source: "GitHub Actions"
+#    2. Settings → Secrets and variables → Actions → cadastrar:
+#         VITE_SUPABASE_URL  e  VITE_SUPABASE_ANON_KEY
+# ─────────────────────────────────────────────────────────────
+
+name: Deploy no GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Preparar o Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Gerar o build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Enviar artefato
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4
