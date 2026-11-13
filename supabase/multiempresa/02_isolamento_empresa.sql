@@ -52,21 +52,24 @@ declare
   ];
 begin
   foreach t in array tabelas loop
-    execute format('drop policy if exists "empresa_isolada" on public.%I', t);
-    execute format(
-      'create policy "empresa_isolada" on public.%I as restrictive for all to authenticated '
-      || 'using (empresa_id = (select public.current_empresa_id())) '
-      || 'with check (empresa_id = (select public.current_empresa_id()))', t);
+    if not exists (select 1 from pg_policies where schemaname='public' and tablename=t and policyname='empresa_isolada') then
+      execute format(
+        'create policy "empresa_isolada" on public.%I as restrictive for all to authenticated '
+        || 'using (empresa_id = (select public.current_empresa_id())) '
+        || 'with check (empresa_id = (select public.current_empresa_id()))', t);
+    end if;
   end loop;
 end $$;
 
 
 -- ───────────────────────────────── 3. EMPRESAS: LER SÓ A PRÓPRIA (req 2) ──
 alter table public.empresas enable row level security;
-drop policy if exists "empresas_select" on public.empresas;
-create policy "empresas_select" on public.empresas
-  for select to authenticated
-  using (id = (select public.current_empresa_id()));
+do $$ begin
+  if not exists (select 1 from pg_policies where schemaname='public' and tablename='empresas' and policyname='empresas_select') then
+    create policy "empresas_select" on public.empresas
+      for select to authenticated using (id = (select public.current_empresa_id()));
+  end if;
+end $$;
 
 -- permissão de leitura (a política acima restringe à própria empresa)
 grant select on public.empresas to authenticated;
@@ -174,34 +177,23 @@ end $function$;
 
 -- ───────────────────────────────── 6. BUCKET POR EMPRESA (req 5) ──
 -- O arquivo fica em "<devedor_id>/<arquivo>". A empresa do documento é a
--- empresa do devedor. Assim conferimos sem mover nenhum arquivo já enviado.
-drop policy if exists "cobrancas_docs_bucket_select" on storage.objects;
-create policy "cobrancas_docs_bucket_select" on storage.objects
-  for select to authenticated using (
-    bucket_id = 'cobrancas-documentos'
-    and exists (select 1 from public.cobrancas_devedores d
-                where d.id = ((storage.foldername(name))[1])::uuid
-                  and d.empresa_id = (select public.current_empresa_id()))
-  );
-
-drop policy if exists "cobrancas_docs_bucket_insert" on storage.objects;
-create policy "cobrancas_docs_bucket_insert" on storage.objects
-  for insert to authenticated with check (
-    bucket_id = 'cobrancas-documentos'
-    and exists (select 1 from public.cobrancas_devedores d
-                where d.id = ((storage.foldername(name))[1])::uuid
-                  and d.empresa_id = (select public.current_empresa_id()))
-  );
-
-drop policy if exists "cobrancas_docs_bucket_delete" on storage.objects;
-create policy "cobrancas_docs_bucket_delete" on storage.objects
-  for delete to authenticated using (
-    bucket_id = 'cobrancas-documentos'
-    and public.is_admin()
-    and exists (select 1 from public.cobrancas_devedores d
-                where d.id = ((storage.foldername(name))[1])::uuid
-                  and d.empresa_id = (select public.current_empresa_id()))
-  );
+-- empresa do devedor. Mantemos as regras atuais do bucket e SOMAMOS uma
+-- regra RESTRICTIVE de empresa (sem apagar nada e sem mover arquivos):
+-- o acesso ao documento exige que o devedor dono seja da empresa do usuário.
+do $$ begin
+  if not exists (select 1 from pg_policies where schemaname='storage' and tablename='objects' and policyname='cobrancas_docs_empresa') then
+    create policy "cobrancas_docs_empresa" on storage.objects
+      as restrictive for all to authenticated
+      using ( bucket_id <> 'cobrancas-documentos'
+              or exists (select 1 from public.cobrancas_devedores d
+                         where d.id = ((storage.foldername(name))[1])::uuid
+                           and d.empresa_id = (select public.current_empresa_id())) )
+      with check ( bucket_id <> 'cobrancas-documentos'
+              or exists (select 1 from public.cobrancas_devedores d
+                         where d.id = ((storage.foldername(name))[1])::uuid
+                           and d.empresa_id = (select public.current_empresa_id())) );
+  end if;
+end $$;
 
 
 -- ───────────────────────────────── 7. VERIFICAÇÃO ──
